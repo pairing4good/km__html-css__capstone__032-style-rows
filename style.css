@@ -1,0 +1,9 @@
+/* Do not change this file for this exercise*/
+
+.row {
+    display: flex;
+}
+
+.row div {
+    padding: 5px;
+}
