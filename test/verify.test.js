@@ -37,46 +37,64 @@ afterEach(async () => {
   await browser.close();
 });
 
-describe('the tasks-status todo', () => {
-  it('should have a background of red', async () => {
-    const backgroundColor = await page.$eval('.todo', (todo) => {
-      let style = window.getComputedStyle(todo);
-      return style.getPropertyValue('background-color');
-    });
-      
-    expect(backgroundColor).toBe('rgb(255, 0, 0)');
-  });
-});
-
-describe('the tasks-status doing', () => {
-  it('should have a background of yellow', async () => {
-    const backgroundColor = await page.$eval('.doing', (doing) => {
-      let style = window.getComputedStyle(doing);
-      return style.getPropertyValue('background-color');
+describe('the tasks-description', () => {
+  it('should take 90% of the row', async () => {
+    const matches = await page.$eval('style', (style) => {
+      return style.innerHTML.match(/\.task-description.*{[\s\S][^}]*flex.*:.*90%.*;/g).length;
     });
     
-    expect(backgroundColor).toBe('rgb(255, 255, 0)');
+    expect(matches).toEqual(1);
   });
 });
 
-describe('the tasks-status done', () => {
-  it('should have a background of green', async () => {
-    const backgroundColor = await page.$eval('.done', (done) => {
-      let style = window.getComputedStyle(done);
-      return style.getPropertyValue('background-color');
+describe('the tasks-status', () => {
+  it('should take 10% of the row', async () => {
+    const matches = await page.$eval('style', (style) => {
+      return style.innerHTML.match(/\.task-status.*{[\s\S][^}]*flex.*:.*10%.*;/g).length;
     });
     
-    expect(backgroundColor).toBe('rgb(0, 128, 0)');
+    expect(matches).toEqual(1);
   });
 });
 
-describe('all of the tasks-status', () => {
-  it('should have rounded corners of 10px', async () => {
-    const borderRadius = await page.$eval('.task-status', (status) => {
-      let style = window.getComputedStyle(status);
-      return style.getPropertyValue('border-radius');
+describe('each row', () => {
+  it('should be underlined in gray', async () => {
+    const border = await page.$eval('.row', (row) => {
+      let style = window.getComputedStyle(row);
+      return style.getPropertyValue('border-bottom');
     });
+    
+    expect(border).toContain('px solid rgb(128, 128, 128)');
+  });
+});
 
-    expect(borderRadius).toBe('10px');
+describe('the task-status', () => {
+  it('should be centered within its background color', async () => {
+    const textAlign = await page.$eval('.task-status', (taskStatus) => {
+      let style = window.getComputedStyle(taskStatus);
+      return style.getPropertyValue('text-align');
+    });
+    
+    expect(textAlign).toBe('center');
+  });
+});
+
+describe('the tasks-status', () => {
+  it('should be at least 4em wide but can grow larger', async () => {
+    const matches = await page.$eval('style', (style) => {
+      return style.innerHTML.match(/\.task-status.*{[\s\S][^}]*min-width.*:.*4em.*;/g).length;
+    });
+    
+    expect(matches).toEqual(1);
+  });
+});
+
+describe('the tasks-status', () => {
+  it('should be exactly 1em tall', async () => {
+    const matches = await page.$eval('style', (style) => {
+      return style.innerHTML.match(/\.task-status.*{[\s\S][^}]*height.*:.*1em.*;/g).length;
+    });
+    
+    expect(matches).toEqual(1);
   });
 });

@@ -4,6 +4,22 @@
     display: flex;
 }
 
-.row div {
+div {
     padding: 5px;
+}
+
+.task-status {
+    border-radius: 10px;
+}
+
+.todo {
+    background-color: red;
+}
+
+.doing {
+    background-color: yellow;
+}
+
+.done {
+    background-color: green;
 }
